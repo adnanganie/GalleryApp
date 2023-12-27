@@ -1,0 +1,23 @@
+ion-content {
+  position: relative;
+  img {
+    border-radius: 20px;
+  }
+}
+
+.close-icon {
+  position: absolute;
+  right: 4px;
+  top: 4px;
+  padding: 4px;
+  font-size: 24px;
+}
+
+ion-card {
+  margin: 8px;
+}
+
+img {
+  width: 100%;
+  height: auto;
+}

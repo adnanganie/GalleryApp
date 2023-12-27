@@ -1,0 +1,81 @@
+<ion-header class="ion-no-border" mode="ios">
+  <ion-toolbar color="light">
+    <ion-title>Photos</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  @if (isLoading) {
+  <ion-list class="ion-padding-top">
+    @for (i of dummyArray; track i) {
+    <ion-item lines="none" class="ion-padding-bottom">
+      <ion-avatar slot="start">
+        <ion-skeleton-text></ion-skeleton-text>
+      </ion-avatar>
+      <ion-skeleton-text animated style="height: 40px" />
+    </ion-item>
+    }
+  </ion-list>
+  } @else if (error) {
+  <ion-alert
+    header="Error"
+    [message]="error"
+    isOpen="true"
+    [buttons]="['Ok']"
+  />
+  }
+
+  <ion-list class="ion-padding-top">
+    <ion-grid>
+      <ion-row>
+        @for (item of photos; track item.id) {
+        <ion-col
+          size="6"
+          size-md="6"
+          size-lg="4"
+          (click)="handleCardTapAction(item)"
+        >
+          <img [alt]="item.alt" [src]="item.src.landscape" />
+        </ion-col>
+        } @empty { @if (!isLoading) {
+        <ion-item lines="none">
+          <ion-label class="ion-text-center">No photos found</ion-label>
+        </ion-item>
+        } }
+      </ion-row>
+    </ion-grid>
+  </ion-list>
+
+  <ion-infinite-scroll (ionInfinite)="loadMore($event)">
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="Loading more data..."
+    />
+  </ion-infinite-scroll>
+</ion-content>
+
+<ion-modal
+  [isOpen]="isModalOpen"
+  [enterAnimation]="enterAnimation"
+  [leaveAnimation]="leaveAnimation"
+>
+  <ng-template>
+    <ion-header class="ion-no-border" mode="md">
+      <ion-toolbar>
+        <ion-title> {{selectedPhoto?.photographer }}</ion-title>
+        <ion-buttons slot="end">
+          <ion-icon
+            size="large"
+            name="close"
+            (click)="setOpen(false)"
+          ></ion-icon>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding">
+      <ion-card>
+        <img [src]="selectedPhoto?.src?.original" [alt]="selectedPhoto?.alt" />
+      </ion-card>
+    </ion-content>
+  </ng-template>
+</ion-modal>
